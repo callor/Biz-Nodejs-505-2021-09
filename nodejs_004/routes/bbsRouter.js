@@ -13,4 +13,19 @@ router.post("/write", (req, res) => {
   });
 });
 
+router.get("/update", (req, res) => {
+  const b_id = req.query.b_id;
+  tbl_bbs.findByPk(b_id).then((result) => {
+    res.render("write", { BBS: result });
+  });
+});
+
+router.post("/update", (req, res) => {
+  const b_id = req.query.b_id;
+  req.body.b_id = b_id;
+  tbl_bbs.update(req.body, { where: { b_id: b_id } }).then((result) => {
+    res.json(result);
+  });
+});
+
 module.exports = router;
