@@ -35,4 +35,18 @@ router.get("/add", (req, res) => {
   res.json(result);
 });
 
+router.get("/input", (req, res) => {
+  res.render("input");
+});
+
+router.post("/input", (req, res) => {
+  const name = req.body.name;
+  const tel = req.body.tel;
+  const age = req.body.age;
+
+  console.log(req.body);
+
+  res.json({ name, tel, age });
+});
+
 module.exports = router;

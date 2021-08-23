@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1>나의 게시판</h1>
+    <table>
+      <tr>
+        <th>NO</th>
+        <th>작성일자</th>
+        <th>작성자</th>
+        <th>제목</th>
+        <th>조회수</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <button class="btn_write">글쓰기</button>
+  </body>
+  <script>
+    document.querySelector("button.btn_write").addEventListener("click", () => {
+      document.location.href = "/bbs/write";
+    });
+  </script>
+</html>
