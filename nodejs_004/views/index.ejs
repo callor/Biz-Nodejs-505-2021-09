@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>나의 게시판</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
@@ -14,13 +14,15 @@
         <th>제목</th>
         <th>조회수</th>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+      <% BBS.forEach( (vo,index) => { %>
+      <tr data-seq="<%= vo.b_id %>">
+        <td><%- index %></td>
+        <td><%- vo.b_date %></td>
+        <td><%- vo.b_time %></td>
+        <td><%- vo.b_subject %></td>
+        <td><%- vo.b_count %></td>
       </tr>
+      <% }) %>
     </table>
     <button class="btn_write">글쓰기</button>
   </body>
