@@ -1,0 +1,20 @@
+form {
+  width: 80%;
+  margin: 10px auto;
+}
+
+form label,
+form input {
+  margin: 5px;
+  padding: 8px;
+  display: inline-block;
+}
+
+form label {
+  width: 30%;
+  text-align: right;
+}
+
+form input {
+  width: 60%;
+}
