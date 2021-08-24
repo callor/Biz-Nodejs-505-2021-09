@@ -36,4 +36,40 @@ router.get("/detail", (req, res) => {
   });
 });
 
+router.get("/delete", (req, res) => {
+  const b_id = req.query.b_id;
+  tbl_bbs
+    // 데이터를 삭제하라
+    .destroy({
+      // b_id 칼럼의 값이 변수 b_id에 담긴 값과 같으면
+      where: { b_id },
+    })
+    .then(() => {
+      res.redirect("/");
+    });
+});
+
+router.get("/update", (req, res) => {
+  const b_id = req.query.b_id;
+
+  // PK 또는 일반 칼럼에 조건을 주어 1개의 데이터를
+  // SELECT 할때
+  // tbl_bbs.findOne({
+  //  where: { b_id },
+  // });
+
+  tbl_bbs.findByPk(b_id).then((result) => {
+    res.render("write", { BBS: result });
+  });
+});
+
+router.post("/update", (req, res) => {
+  const b_id = req.query.b_id;
+
+  req.body.b_id = b_id;
+  tbl_bbs.update(req.body, { where: { b_id } }).then((result) => {
+    res.redirect("/");
+  });
+});
+
 module.exports = router;

@@ -65,9 +65,9 @@
       const className = btn.className;
       let url = "/";
       if (className.includes("btn_update")) {
-        url += `bbs/update?b_id=${BBS.b_id}`;
+        url += `bbs/update?b_id=<%- BBS.b_id %>`;
       } else if (className.includes("btn_delete")) {
-        url += `bbs/delete?b_id=${BBS.b_id}`;
+        url += `bbs/delete?b_id=<%- BBS.b_id %>`;
       }
       document.location.href = url;
     });
