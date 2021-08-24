@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="/css/main.css" rel="stylesheet" />
+    <style>
+      section.bbs_detail {
+        width: 80%;
+        margin: 10px auto;
+      }
+
+      section.bbs_detail span {
+        display: inline-block;
+        padding: 1rem;
+        margin: 5px;
+      }
+
+      section.bbs_detail span.title {
+        width: 30%;
+        background-color: #ddd;
+        text-align: right;
+      }
+
+      section.bbs_detail span.data {
+        width: 60%;
+        background-color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="bbs_detail">
+      <div>
+        <span class="title">작성자</span>
+        <span class="data"><%- BBS.b_writer %></span>
+      </div>
+      <div>
+        <span class="title">작성일자</span>
+        <span class="data"><%- BBS.b_date %></span>
+      </div>
+      <div>
+        <span class="title">작성시각</span>
+        <span class="data"><%- BBS.b_time %></span>
+      </div>
+      <div>
+        <span class="title">제목</span>
+        <span class="data"><%- BBS.b_subject %></span>
+      </div>
+      <div>
+        <span class="title">내용</span>
+        <span class="data"><%- BBS.b_text %></span>
+      </div>
+      <div class="btn_box">
+        <button class="btn btn_home">홈으로</button>
+        <button class="btn btn_update">수정</button>
+        <button class="btn btn_delete">삭제</button>
+      </div>
+    </section>
+  </body>
+  <script>
+    document.querySelector("div.btn_box").addEventListener("click", (e) => {
+      const btn = e.target;
+      const className = btn.className;
+      let url = "/";
+      if (className.includes("btn_update")) {
+        url += `bbs/update?b_id=${BBS.b_id}`;
+      } else if (className.includes("btn_delete")) {
+        url += `bbs/delete?b_id=${BBS.b_id}`;
+      }
+      document.location.href = url;
+    });
+  </script>
+</html>

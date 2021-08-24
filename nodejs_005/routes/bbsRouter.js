@@ -23,4 +23,17 @@ router.post("/write", (req, res) => {
   tbl_bbs.create(req.body).then((result) => res.redirect("/"));
 });
 
+router.get("/detail", (req, res) => {
+  // list에서 게시물을 클릭했을때
+  // 게시물의 id(b_id)값을 queryString으로 가지고
+  // 여기에 도달한다
+  const b_id = req.query.b_id;
+
+  // PK를 기준으로 1개의 데이터를 추출하라
+  tbl_bbs.findByPk(b_id).then((result) => {
+    console.table(result);
+    res.render("detail", { BBS: result });
+  });
+});
+
 module.exports = router;
