@@ -1,0 +1,35 @@
+extends layout
+
+block content
+	header 
+		h1 나의 게시판 
+		p 나의 게시판에 오신것을 환영합니다 
+	section#main 
+		table.bbs_list.table.etc
+			tr 
+				th NO 
+				th 작성일자 
+				th 작성시각 
+				th 작성자 
+				th 제목 
+				th 조회수
+			each vo,index in BBS
+				tr(data-id= vo.b_id)
+					td= index 
+					td= vo.b_writer 
+					td= vo.b_date 
+					td= vo.b_time
+					td= vo.b_subject
+					td= vo.b_count
+		.btn_box
+			button.btn_write 글쓰기
+	script.
+		document.querySelector("table.bbs_list")
+		.addEventListener("click",(e)=>{
+			const td = e.target 
+			if(td.tagName === "TD") {
+				const tr = td.parentNode
+				const b_id = tr.dataset.id 
+				document.location.href=`/bbs/detail?b_id=${b_id}`
+			}						
+		})
