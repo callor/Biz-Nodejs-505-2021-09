@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>나의 게시판</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>나의 게시판</h1>
+      <p>나의 게시판에 오신것을 환영합니다</p>
+    </header>
+    <section>
+      <table class="bbs_list">
+        <tr>
+          <th>NO</th>
+          <th>작성일자</th>
+          <th>작성시각</th>
+          <th>작성자</th>
+          <th>제목</th>
+          <th>조회수</th>
+        </tr>
+        <% BBS.forEach((vo,index)=>{ %>
+        <tr data-id="<%- vo.b_id %>">
+          <td><%- index %></td>
+          <td><%- vo.b_date %></td>
+          <td><%- vo.b_time %></td>
+          <td><%- vo.b_writer %></td>
+          <td><%- vo.b_subject %></td>
+          <td><%- vo.b_count %></td>
+        </tr>
+        <% }) %>
+      </table>
+      <div class="btn_box">
+        <button class="btn_write">글쓰기</button>
+      </div>
+    </section>
+    <footer>
+      <address>CopyRight &copy; callor@callor.com</address>
+    </footer>
+  </body>
+  <script>
+    document.querySelector("button.btn_write").addEventListener("click", () => {
+      document.location.href = "/bbs/write";
+    });
+
+    document.querySelector("table.bbs_list").addEventListener("click", (e) => {
+      const td = e.target;
+      // alert(td.tagName);
+      if (td.tagName === "TD") {
+        const tr = td.closest("TR");
+        const b_id = tr.dataset.id;
+        // document.location.href = "/bbs/detail?b_id=" + b_id;
+
+        // JS의 String template을 이용한 문자열 생성
+        // 백팃으로 감싸고 변수부분을 ${변수명}으로 사용하면
+        // 문자열 연결(+)을 하지 않고 자연스러운 코드를
+        // 얻을 수 있다
+        document.location.href = `/bbs/detail?b_id=${b_id}`;
+      }
+    });
+  </script>
+</html>
