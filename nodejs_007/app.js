@@ -9,6 +9,7 @@ var app = express();
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const bbsRouter = require("./routes/bbsRouter");
+const fileRouter = require("./routes/fileRouter");
 
 const sequelize = require("./models/index").sequelize;
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/bbs", bbsRouter);
+app.use("/file", fileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -44,3 +44,8 @@ forEach로 반복 하면서 값을 추출하여 사용해야 한다
 - #{} 를 사용하는 방법 : div #{변수명}
 - !{} 를 사용하는 방법 : div !{변수명}  
   변수에 포함된 데이터(문자열)에 HTML tag가 포함되어 있고 view 화면에서 HTML tag를 적용하여 보여주고 싶을때
+
+## nodejs file upload
+
+- 필요한 dependency : multer
+- npm install multer

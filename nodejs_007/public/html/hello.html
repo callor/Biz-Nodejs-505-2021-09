@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <style>
+      div.pa {
+        border: 1px solid blue;
+        padding: 10px;
+        margin: 5px;
+      }
+      div.pa div {
+        border: 1px solid red;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#ga").addEventListener("clici", () => {});
+      });
+      // document.querySelector("document")
+      $(document).ready(function () {
+        // JQuery 문법이 적용되는 영역
+      });
+
+      // 최신 JQuery 시작점
+      $(function () {
+        $("#ga").on("click", function () {
+          alert($(this).text());
+        });
+        $("#na").on("click", (e) => {
+          alert($(e.target).text());
+        });
+        $("#da").on("click", function () {
+          $(this).fadeOut();
+        });
+      });
+
+      $(() => {
+        // JQuery 코드가 작동되는 영역
+      });
+    </script>
+  </head>
+  <body>
+    <h1>반갑습니다</h1>
+    <div class="pa">
+      <div id="ga">가</div>
+    </div>
+    <div class="pa">
+      <div id="na">나</div>
+    </div>
+    <div class="pa">
+      <div id="da">다</div>
+    </div>
+  </body>
+</html>

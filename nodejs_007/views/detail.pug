@@ -92,18 +92,21 @@ block content
 				button.btn_reply 댓글저장
 
 	script.
-		document.querySelector("div.btn_box").addEventListener("click", (e) = {
+		document.querySelector("div.btn_box").addEventListener("click", (e) => {
 			const btn = e.target;
 			const className = btn.className;
 			let url = "/";
 			if (className.includes("btn_update")) {
-				url += `bbs/update?b_id=%- BBS.b_id %`;
+				url += `bbs/update?b_id=#{BBS.b_id}`;
 			} else if (className.includes("btn_delete")) {
-				url += `bbs/delete?b_id=%- BBS.b_id %`;
+				if( !confirm("본문을 삭제합니다") ) {
+					return false 
+				}
+				url += `bbs/delete?b_id=#{BBS.b_id}`;
 			}
 			document.location.href = url;
 		});
-		document.querySelector("section.reply").addEventListener("click", (e) = {
+		document.querySelector("section.reply").addEventListener("click", (e) => {
 			const click_tag = e.target;
 
 			if (
