@@ -65,10 +65,10 @@ block content
 			span.data= BBS.b_time
 		div
 			span.title 제목
-			span.data= BBS.b_subject 
+			span.data #{BBS.b_subject} 
 		div
 			span.title 내용
-			span.data= BBS.b_text
+			span.data !{BBS.b_text}
 
 		.btn_box 
 			button.btn.btn_home 홈으로
@@ -76,54 +76,43 @@ block content
 			button.btn.btn_delete 삭제
 
 	section.reply
-		% BBS.tbl_replies.forEach( (vo,index)={ %
 		each vo,index in BBS.tbl_replies
 			article.reply
-				div= vo.r_writer %/div
-				div= vo.r_content %/div
+				div= vo.r_writer
+				div= vo.r_content
 				div.reply_delete(data-rid= vo.id) X
-				
-		form method="POST" action="/bbs/reply"
-			input type="hidden" name="r_postId" value="%- BBS.b_id %" /
+
+		form(method="POST",action="/bbs/reply",class="bbs_writer")
+			input(type="hidden", name="r_postId", value= BBS.b_id)
 			div
-				input
-				name="r_writer"
-				id="r_writer"
-				placeholder="작성자를 입력하세요"
+				input#r_writer(name="r_writer",placeholder="작성자를 입력하세요")
 			div
-				input
-				name="r_content"
-				id="r_content"
-				placeholder="댓글을 입력하세요"
-			div class="btn_box"button class="btn_reply"댓글저장/button/div
+				input(id="r_content",name="r_content",placeholder="댓글을 입력하세요")
+			div.btn_box 
+				button.btn_reply 댓글저장
 
+	script.
+		document.querySelector("div.btn_box").addEventListener("click", (e) = {
+			const btn = e.target;
+			const className = btn.className;
+			let url = "/";
+			if (className.includes("btn_update")) {
+				url += `bbs/update?b_id=%- BBS.b_id %`;
+			} else if (className.includes("btn_delete")) {
+				url += `bbs/delete?b_id=%- BBS.b_id %`;
+			}
+			document.location.href = url;
+		});
+		document.querySelector("section.reply").addEventListener("click", (e) = {
+			const click_tag = e.target;
 
-
-
-script
-document.querySelector("div.btn_box").addEventListener("click", (e) = {
-const btn = e.target;
-const className = btn.className;
-let url = "/";
-if (className.includes("btn_update")) {
-url += `bbs/update?b_id=%- BBS.b_id %`;
-} else if (className.includes("btn_delete")) {
-url += `bbs/delete?b_id=%- BBS.b_id %`;
-}
-document.location.href = url;
-});
-document.querySelector("section.reply").addEventListener("click", (e) = {
-const click_tag = e.target;
-
-if (
-click_tag.tagName === "DIV" &&
-click_tag.className.includes("reply_delete")
-) {
-let rid = click_tag.dataset.rid;
-if (confirm("댓글을 삭제합니다")) {
-document.location.href = "/bbs/reply/delete/" + rid;
-}
-}
-});
-/script
-/html
+			if (
+				click_tag.tagName === "DIV" &&
+				click_tag.className.includes("reply_delete")
+			) {
+				let rid = click_tag.dataset.rid;
+				if (confirm("댓글을 삭제합니다")) {
+					document.location.href = "/bbs/reply/delete/" + rid;
+				}
+			}
+		});
