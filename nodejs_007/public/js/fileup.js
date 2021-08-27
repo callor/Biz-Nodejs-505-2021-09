@@ -11,6 +11,8 @@ const fileUpfetch = (files) => {
   //   summernote로 부터 받은 파일들 중
   //	첫번째 파일에 대한 정보를 저장한다
   formData.append("upFile", files[0]);
+  console.table(files[0]);
+  alert(files[0].name);
 
   fetch("/file/fileUp", {
     method: "POST",
