@@ -43,6 +43,8 @@ block content
 	article.order_list(data-table_id= table_id) 
 		h1 !{table_id} 번 테이블 주문 리스트
 	article.product_list
-		- for(let i = 0 ; i < 20 ; i++)
-			div.menu(data-menu_id= i+1) !{i+1} 번 메뉴
+		each menu_item,index in MENU
+			div.menu(data-menu_id= menu_item.p_code)
+				h3= menu_item.p_name 
+				p= menu_item.p_price
 	

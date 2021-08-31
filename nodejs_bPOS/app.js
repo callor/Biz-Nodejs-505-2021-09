@@ -4,6 +4,16 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+// const sequelize = require("./models/index").sequelize;
+// sequelize.sync();
+
+const sequelize = require("./models/index");
+sequelize.sequelize.sync().then((result) => {
+  console.log("Host:", result.options.host);
+  console.log("Database:", result.options.database);
+  console.log("DB 연결 OK!!!");
+});
+
 var indexRouter = require("./routes/index");
 
 // 생성한 router를 import하기
