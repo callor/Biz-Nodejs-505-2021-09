@@ -1,6 +1,7 @@
 extends layout
 
 block content
+	script(src="/js/table.js")
 	style.
 		section.main {
 			display:flex;
@@ -17,6 +18,16 @@ block content
 
 			text-align:center;
 			line-height:100px;
+
+			background-color:green;
+			color:white;
+			font-weight:bold;
+			font-size:20px;
+
+			cursor:pointer;
+		}
+		div.table:hover {
+			box-shadow:2px 2px 2px blue;
 		}
 	- for(let i = 0 ; i < 12 ; i++)
-		div.table !{i + 1} 번 테이블
+		div.table(data-table_id= i+1 ) !{i + 1} 번 테이블
