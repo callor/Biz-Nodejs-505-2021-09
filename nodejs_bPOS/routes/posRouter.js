@@ -32,6 +32,7 @@ router.get("/order/:table_id/input/:menu_id", (req, res) => {
   // 선택된 메뉴를 menu_list에 추가
   tbl_product.findByPk(menu_id).then((result) => {
     menu_list.push(result);
+    console.log(menu_list);
     res.json({ table_id, menu_list });
   });
 

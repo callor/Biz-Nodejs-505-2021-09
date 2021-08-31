@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="main"></div>
+  </body>
+  <script>
+    const tags = ["대한민국", "우리나라", "republic of Korea"];
+
+    const div_main = document.querySelector("div.main");
+    // 배열을 사용하여 tag를 추가하는 전통적인 JS 코드
+    tags.forEach((tag, index) => {
+      const div = document.createElement("div");
+      div.innerText = tag;
+      div_main.appendChild(div);
+    });
+
+    // map() 을 사용하여 tags에 담긴 문자열이 포함된
+    // div tag 배열을 먼저 만들고
+    const div_array = tags.map((tag, index) => {
+      const div = document.createElement("div");
+      div.innerText = tag;
+      return div;
+    });
+
+    // ES6+ 의 코드
+    // 생성된 div tag 배열을 전개연산자(spread)를 사용하여
+    // 한번에 append하기
+    div_main.append(...div_array);
+  </script>
+</html>

@@ -2,8 +2,19 @@
 const add_order_list = (menu_list) => {
   const order_box = document.querySelector("article.order_list");
 
-  menu_list.forEach((menu, index) => {
-    const order_list = document.createElement("div");
+  // 리스트가 중복되어 표시되는 것을 방지하기 위하여
+  // 기존에 div.order_list 가 있는지 확인하고
+  // div.order_list를 가져와서, 전체를 article.order_list로 부터
+  // 삭제하기
+  let order_list = document.querySelectorAll("div.order_list");
+  if (order_list) {
+    order_list.forEach((order_tag) => {
+      order_box.removeChild(order_tag);
+    });
+  }
+
+  const orders = menu_list.map((menu, index) => {
+    order_list = document.createElement("div");
     order_list.classList.add("order_list");
 
     // div.menu_id tag를 만들어라
@@ -29,8 +40,11 @@ const add_order_list = (menu_list) => {
     order_list.appendChild(menu_price);
     order_list.appendChild(menu_qty);
 
-    order_box.appendChild(order_list);
+    return order_list;
+
+    // order_box.appendChild(order_list);
   });
+  order_box.append(...orders);
 };
 
 // fetch를 사용하여 서버에 데이터를 요청하기 위해 별도의
