@@ -9,20 +9,9 @@ const { tbl_product, tbl_table_orders } = require("../models/index");
 // 이 tbale_id 는 req.params.table_id 를 getter하여 값을 확인할수 있다
 router.get("/order/:table_id", async (req, res) => {
   const table_id = req.params.table_id;
-  console.log("table id", table_id);
-
   // p_name 칼럼을 기준으로 오름차순정렬하여 보여라
   const MENU = await tbl_product.findAll().then({ order: ["p_name", "ASC"] });
-  // .then((result) => {
-  //   res.render("order_view", { table_id, MENU: result });
-  // });
-
-  const order_list = await tbl_table_orders.findAll({
-    where: { to_table_id: table_id },
-  });
-  res.render("order_view", { table_id, MENU, order_list });
-  // res.render("order_view", { table_id: table_id });
-  // res.render("order_view", { table_id });
+  res.render("order_view", { table_id, MENU });
 });
 
 // table id와 menu id가 Web으로부터 전달되어 왔다
