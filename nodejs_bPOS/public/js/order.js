@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const order_article = document.querySelector("article.order_list");
   const table_id = order_article.dataset.table_id;
 
+  // article.product_list 의 div.menu가 클릭되면 할일 지정
   const product_article = document.querySelector("article.product_list");
 
   if (product_article) {
