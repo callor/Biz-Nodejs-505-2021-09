@@ -20,20 +20,20 @@ const add_order_list = (menu_list) => {
     // div.menu_id tag를 만들어라
     const menu_id = document.createElement("div");
     menu_id.classList.add("menu_id");
-    menu_id.innerText = menu.p_code;
+    menu_id.innerText = menu.to_pcode;
 
     // div.menu_name tag를 만들어라
     const menu_name = document.createElement("div");
     menu_name.classList.add("menu_name");
-    menu_name.innerText = menu.p_name;
+    // menu_name.innerText = menu.p_name;
 
     const menu_qty = document.createElement("div");
     menu_qty.classList.add("menu_qty");
-    menu_qty.innerText = 1;
+    menu_qty.innerText = menu.to_qty;
 
     const menu_price = document.createElement("div");
     menu_price.classList.add("menu_price");
-    menu_price.innerText = menu.p_price;
+    menu_price.innerText = menu.to_price;
 
     order_list.appendChild(menu_id);
     order_list.appendChild(menu_name);
@@ -62,7 +62,7 @@ const order_input = (table_id, menu_id) => {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-      add_order_list(result.menu_list);
+      add_order_list(result.order_list);
     });
 };
 
@@ -93,4 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  // 주문서 화면이 열릴때
+  // 서버로 부터 table에 주문내용이 있으면 가져와서 보여라
+  fetch(`/pos/getorder/${table_id}`)
+    .then((res) => res.json())
+    .then((result) => add_order_list(result));
 });
