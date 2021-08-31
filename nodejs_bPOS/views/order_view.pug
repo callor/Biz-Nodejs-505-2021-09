@@ -1,6 +1,7 @@
 extends layout
 
 block content
+	script(src="/js/order.js")
 	style.
 		section.main {
 			display:flex;
@@ -39,9 +40,9 @@ block content
 			font-weight:bold;
 		}
 
-	article.order_list 
+	article.order_list(data-table_id= table_id) 
 		h1 !{table_id} 번 테이블 주문 리스트
 	article.product_list
 		- for(let i = 0 ; i < 20 ; i++)
-			div.menu !{i+1} 번 메뉴
+			div.menu(data-menu_id= i+1) !{i+1} 번 메뉴
 	
