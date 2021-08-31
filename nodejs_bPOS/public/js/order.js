@@ -1,3 +1,38 @@
+// fetch를 통해서 되돌려 받은 주문리스트를 왼쪽으 주문리스트에 표현하기
+const add_order_list = (menu_list) => {
+  const order_box = document.querySelector("article.order_list");
+
+  menu_list.forEach((menu, index) => {
+    const order_list = document.createElement("div");
+    order_list.classList.add("order_list");
+
+    // div.menu_id tag를 만들어라
+    const menu_id = document.createElement("div");
+    menu_id.classList.add("menu_id");
+    menu_id.innerText = menu.p_code;
+
+    // div.menu_name tag를 만들어라
+    const menu_name = document.createElement("div");
+    menu_name.classList.add("menu_name");
+    menu_name.innerText = menu.p_name;
+
+    const menu_qty = document.createElement("div");
+    menu_qty.classList.add("menu_qty");
+    menu_qty.innerText = 1;
+
+    const menu_price = document.createElement("div");
+    menu_price.classList.add("menu_price");
+    menu_price.innerText = menu.p_price;
+
+    order_list.appendChild(menu_id);
+    order_list.appendChild(menu_name);
+    order_list.appendChild(menu_price);
+    order_list.appendChild(menu_qty);
+
+    order_box.appendChild(order_list);
+  });
+};
+
 // fetch를 사용하여 서버에 데이터를 요청하기 위해 별도의
 // 함수를 선언하기
 const order_input = (table_id, menu_id) => {
@@ -11,7 +46,10 @@ const order_input = (table_id, menu_id) => {
    */
   fetch(`/pos/order/${table_id}/input/${menu_id}`)
     .then((res) => res.json())
-    .then((result) => console.log(result));
+    .then((result) => {
+      console.log(result);
+      add_order_list(result.menu_list);
+    });
 };
 
 // DOMContentedLoaded event를 설정하면

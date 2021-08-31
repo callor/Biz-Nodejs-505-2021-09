@@ -18,6 +18,7 @@ block content
 		}
 		article.order_list {
 			flex:2;
+			overflow:auto;
 		}
 		article.product_list {
 			flex:3;
@@ -42,6 +43,8 @@ block content
 
 	article.order_list(data-table_id= table_id) 
 		h1 !{table_id} 번 테이블 주문 리스트
+
+
 	article.product_list
 		each menu_item,index in MENU
 			div.menu(data-menu_id= menu_item.p_code)
