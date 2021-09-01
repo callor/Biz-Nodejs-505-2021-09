@@ -52,6 +52,18 @@ block content
 			border:1px solid #333;
 		}
 
+		div.order_list div.menu_delete {
+			flex:0;
+			cursor:pointer;
+			border:none;
+		}
+
+		div.menu_delete:hover {
+			color:red;
+			background-color:#eee;
+			font-weight:bold;
+		}
+
 	article.order_list(data-table_id= table_id) 
 		h1 !{table_id} 번 테이블 주문 리스트
 

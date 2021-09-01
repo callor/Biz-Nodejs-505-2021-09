@@ -32,14 +32,15 @@ router.get("/order/:table_id/input/:menu_id", (req, res) => {
       to_time: moment().format("HH:mm:ss"),
     };
     tbl_table_orders.create(table_orders).then((result) => {
-      tbl_table_orders
-        .findAll({
-          where: { to_table_id: table_id },
-          include: [{ model: tbl_product, require: false }],
-        })
-        .then((order_list) => {
-          res.json({ table_id, order_list });
-        });
+      res.json(result);
+      //   tbl_table_orders
+      //     .findAll({
+      //       where: { to_table_id: table_id },
+      //       include: [{ model: tbl_product, require: false }],
+      //     })
+      //     .then((order_list) => {
+      //       res.json({ table_id, order_list });
+      //     });
     });
   });
 });
@@ -57,4 +58,19 @@ router.get("/getorder/:table_id", (req, res) => {
     })
     .then((result) => res.json(result));
 });
+
+router.get("/order/:order_seq/delete", (req, res) => {
+  const order_seq = req.params.order_seq;
+  tbl_table_orders
+    .destroy({
+      where: { to_seq: order_seq },
+    })
+    .then(() => {
+      res.send("OK");
+    })
+    .catch(() => {
+      res.send("FAIL");
+    });
+});
+
 module.exports = router;

@@ -13,6 +13,8 @@ const add_order_list = (order_list) => {
     });
   }
 
+  const total_pay = { count: 0, total: 0 };
+
   const orders = order_list.map((order, index) => {
     order_div_list = document.createElement("div");
     order_div_list.classList.add("order_list");
@@ -35,16 +37,41 @@ const add_order_list = (order_list) => {
     menu_price.classList.add("menu_price");
     menu_price.innerText = order.to_price;
 
+    // 주문상품에 대한 합계
+    const to_total = order.to_qty * order.to_price;
+    const menu_total = document.createElement("div");
+    menu_total.classList.add("menu_total");
+    menu_total.innerText = to_total;
+
+    total_pay.count++;
+    total_pay.total += to_total;
+
+    const menu_delete = document.createElement("div");
+    menu_delete.classList.add("menu_delete");
+    menu_delete.innerText = "X";
+    menu_delete.dataset.order_seq = order.to_seq;
+
     order_div_list.appendChild(menu_id);
     order_div_list.appendChild(menu_name);
     order_div_list.appendChild(menu_price);
     order_div_list.appendChild(menu_qty);
+    order_div_list.appendChild(menu_total);
+    order_div_list.appendChild(menu_delete);
 
     return order_div_list;
 
     // order_box.appendChild(order_list);
   });
   order_box.append(...orders);
+
+  const total_html = `
+  				<div class='order_list'>
+  					<div>합계</div>
+  					<div>${total_pay.count}</div>
+					<div>${total_pay.total}</div>
+				</div>`;
+
+  order_box.innerHTML += total_html;
 };
 
 // fetch를 사용하여 서버에 데이터를 요청하기 위해 별도의
@@ -62,8 +89,15 @@ const order_input = (table_id, menu_id) => {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-      add_order_list(result.order_list);
     });
+};
+
+const getOrders = (table_id) => {
+  // 주문서 화면이 열릴때
+  // 서버로 부터 table에 주문내용이 있으면 가져와서 보여라
+  fetch(`/pos/getorder/${table_id}`)
+    .then((res) => res.json())
+    .then((result) => add_order_list(result));
 };
 
 // DOMContentedLoaded event를 설정하면
@@ -90,13 +124,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // fetch 전송위한 함수 호출
         order_input(table_id, menu_id);
+        getOrders(table_id);
       }
     });
   }
 
-  // 주문서 화면이 열릴때
-  // 서버로 부터 table에 주문내용이 있으면 가져와서 보여라
-  fetch(`/pos/getorder/${table_id}`)
-    .then((res) => res.json())
-    .then((result) => add_order_list(result));
+  if (order_article) {
+    order_article.addEventListener("click", (e) => {
+      const target = e.target;
+      if (
+        target.tagName === "DIV" &&
+        target.className.includes("menu_delete")
+      ) {
+        const order_seq = target.dataset.order_seq;
+        // alert(order_seq);
+        if (confirm("주문 메뉴를 삭제합니다!!!")) {
+          fetch(`/pos/order/${order_seq}/delete`)
+            // router에서 res.send()로 문자열을 보냈기 때문에
+            // res.text() 함수를 사용한다
+            .then((res) => {
+              return res.text();
+            })
+            .then((result) => {
+              if (result === "OK") {
+                getOrders(table_id);
+              }
+            });
+        }
+      }
+    });
+  }
+  // 화면이 열릴때 자동으로 실행될 코드
+  getOrders(table_id);
 });
