@@ -73,4 +73,18 @@ router.get("/order/:order_seq/delete", (req, res) => {
     });
 });
 
+router.get("/paycomplet/:table_id", (req, res) => {
+  const table_id = req.params.table_id;
+  // 주문서에 결제와 완료된 표식으로
+  // to_pay 칼럼에 문자열 P 업데이트
+  tbl_table_orders
+    .update({ to_pay: "P" }, { where: { to_table_id: table_id } })
+    .then((result) => {
+      console.log(result);
+      res.send("OK");
+    })
+    .catch(() => {
+      res.send("FAIL");
+    });
+});
 module.exports = router;

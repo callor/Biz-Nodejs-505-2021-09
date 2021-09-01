@@ -67,8 +67,8 @@ const add_order_list = (order_list) => {
   const total_html = `
   				<div class='order_list'>
   					<div>합계</div>
-  					<div>${total_pay.count}</div>
-					<div>${total_pay.total}</div>
+  					<div class='order_pay_count'>${total_pay.count}</div>
+					<div class='order_pay_total'>${total_pay.total}</div>
 				</div>`;
 
   order_box.innerHTML += total_html;
@@ -193,14 +193,45 @@ document.addEventListener("DOMContentLoaded", () => {
   // 설정하는 방법
   document.addEventListener("click", (e) => {
     const button = e.target;
+    const modal = document.querySelector("div.modal");
+
     if (button.tagName === "BUTTON") {
       if (button.className.includes("btn_cash")) {
-        alert("현금결제");
-        const modal = document.querySelector("div.modal");
+        document.querySelector("span.pay_qty").innerText = "현금결제";
         modal.style.display = "flex";
       } else if (button.className.includes("btn_card")) {
-        alert("카드결제");
+        document.querySelector("span.pay_qty").innerText = "카드결제";
+        modal.style.display = "flex";
       }
+      const order_pay_total = document.querySelector(
+        "div.order_pay_total"
+      ).innerText;
+      document.querySelector("span.pay_total").innerText = order_pay_total;
     }
   });
+
+  // x 버튼을 클릭하여 modal 창 닫기
+  document.querySelector("div.close span").addEventListener("click", (e) => {
+    document.querySelector("div.modal").style.display = "none";
+  });
+
+  document
+    .querySelector("button.btn_pay_complete")
+    .addEventListener("click", () => {
+      if (confirm("결제를 진행할까요?")) {
+        // 현재 table_id 값을 getter
+        const article_order = document.querySelector("article.order_list");
+        const table_id = article_order.dataset.table_id;
+
+        // fetch로 서버에 결제완료 요청
+        fetch(`/pos/paycomplet/${table_id}`)
+          .then((res) => res.text())
+          .then((result) => {
+            if (result === "OK") {
+              document.querySelector("div.modal").style.display = "none";
+              getOrders(table_id);
+            }
+          });
+      }
+    });
 });
