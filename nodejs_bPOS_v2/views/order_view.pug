@@ -1,0 +1,65 @@
+extends layout
+
+block content
+	script(src="/js/order.js")
+	style.
+		section.main {
+			display:flex;
+			flex-wrap:wrap;
+			justify-content:center;
+			align-items:center;
+		}
+		article {
+			border:1px solid green;
+			margin:10px;
+			padding:10px;
+			background-color:#ddd;
+			height:90%;
+		}
+		article.order_list {
+			flex:2;
+			overflow:auto;
+		}
+		article.product_list {
+			flex:3;
+			display:flex;
+			flex-wrap:wrap;
+		}
+
+		article.order_list h1 {
+			background-color:#333;
+			color:white;
+			text-align:center;
+		}
+
+		article.product_list div.menu {
+			width:100px;
+			margin:5px;
+			border:1px solid red;
+			background-color:#ddd;
+			color:blue;
+			font-weight:bold;
+		}
+
+		div.order_list {
+			display:flex;
+		}
+
+		div.order_list div {
+			flex:1;
+			margin:5px;
+			padding:3px;
+			border:1px solid #333;
+		}
+
+	article.order_list(data-table_id= table_id) 
+		h1 !{table_id} 번 테이블 주문 리스트
+
+
+	article.product_list
+		each menu_item,index in MENU
+			div.menu(data-menu_id= menu_item.p_code)
+				h3= menu_item.p_name 
+				p= menu_item.p_price
+	
+		
