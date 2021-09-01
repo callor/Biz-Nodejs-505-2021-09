@@ -51,9 +51,18 @@ router.get("/order/:table_id/input/:menu_id", (req, res) => {
 router.get("/getorder/:table_id", (req, res) => {
   const table_id = req.params.table_id;
 
+  /**
+   * 주문이 진행중인 상태에서는 orders 들의
+   * to_pay 칼럼이 null 이고
+   * 결제가 완료된 상태는 to_pay에 문자열 P가 담기게 되므로
+   * table layout에셔 table을 선택하고 주문으로 들어오면
+   * 해당 table id의 데이터들 중에서 to_pay가 null 값만
+   * select하여 보여주기
+   */
+
   tbl_table_orders
     .findAll({
-      where: { to_table_id: table_id },
+      where: { to_table_id: table_id, to_pay: null },
       include: [{ model: tbl_product, require: false }],
     })
     .then((result) => res.json(result));
