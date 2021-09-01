@@ -72,6 +72,13 @@ const add_order_list = (order_list) => {
 				</div>`;
 
   order_box.innerHTML += total_html;
+
+  const pay_button_html = `<div class='order_list pay_box'>
+  			<button class='btn_cash'>현금결제</button>
+			<button class='btn_card'>카드결제</button>
+		</div>`;
+
+  order_box.innerHTML += pay_button_html;
 };
 
 // fetch를 사용하여 서버에 데이터를 요청하기 위해 별도의
@@ -89,6 +96,7 @@ const order_input = (table_id, menu_id) => {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
+      getOrders(table_id);
     });
 };
 
@@ -109,6 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const order_article = document.querySelector("article.order_list");
   const table_id = order_article.dataset.table_id;
 
+  const pay_box = document.querySelector("div.pay_box");
+
   // article.product_list 의 div.menu가 클릭되면 할일 지정
   const product_article = document.querySelector("article.product_list");
 
@@ -124,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // fetch 전송위한 함수 호출
         order_input(table_id, menu_id);
-        getOrders(table_id);
       }
     });
   }
@@ -156,4 +165,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // 화면이 열릴때 자동으로 실행될 코드
   getOrders(table_id);
+
+  // button box에 click event를 설정하고
+  // button 클릭되었을때 결제 처리를 수행하려고 했다
+  // button box 포함하여 button을 동적으로 생성을 했다
+  // 동적으로 생성된 tag들은 자체적으로 event를 수신하지 못한다
+  // 아래의 event 핸들러는 div.button_box가 만들어지기 전에
+  // 선언되고 OS에게 알려진 코드이다
+  // div.button_box가 아직 만들어지지 않은 상태에서
+  // 선언된 event 핸들러는 OS가 무시해 버린다
+  if (pay_box) {
+    pay_box.addEventListener("click", (e) => {
+      const button = e.target;
+
+      if (button.className.includes("btn_cash")) {
+        alert("현금결제");
+      } else {
+        alert("카드결제");
+      }
+    });
+  }
+
+  // 동적으로 생성된 tag에 event 핸들링을 하기 위해서
+  // 처음에 아예 전체 HTMl 문서 자체에 click event를 설정해 둔다
+  // document에 click event를 설정하고
+  // 실제 tag가 생성된 후에 event를 버블링 할수 있도록
+  // 설정하는 방법
+  document.addEventListener("click", (e) => {
+    const button = e.target;
+    if (button.tagName === "BUTTON") {
+      if (button.className.includes("btn_cash")) {
+        alert("현금결제");
+        const modal = document.querySelector("div.modal");
+        modal.style.display = "flex";
+      } else if (button.className.includes("btn_card")) {
+        alert("카드결제");
+      }
+    }
+  });
 });

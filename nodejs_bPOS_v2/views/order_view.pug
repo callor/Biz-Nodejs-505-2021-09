@@ -74,4 +74,47 @@ block content
 				h3= menu_item.p_name 
 				p= menu_item.p_price
 	
-		
+
+	style.
+		div.modal {
+			position:fixed;
+			top:0;
+			left:0;
+			width:100vw;
+			height:100vh;
+			background-color:rgba(0,0,0,0.5);
+			z-index:10;
+			
+			flex-flow:column;
+			display:none;
+		}
+		div.close {
+			text-align:right;
+			color:white;
+			font-size:30px;
+			padding:20px;
+		}
+
+		div.close span:hover {
+			border-radius:50%;
+			background-color:#ddd;
+		}
+
+		div.message {
+			display:flex;
+			flex-flow:column;
+			justify-content:center;
+			align-items:center;
+			color:yellow;
+		}
+
+	div.modal 
+		div.close
+			span &times;
+		div.message
+			h1 결제금액 :
+				span.pay_total
+			h2 결제종류 :
+				span.pay_qty
+			button 확인	
+
