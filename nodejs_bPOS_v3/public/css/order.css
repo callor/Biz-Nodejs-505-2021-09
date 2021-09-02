@@ -91,3 +91,20 @@ div.btn_box button {
   margin: 5px;
   border-radius: 5px;
 }
+
+div.btn_box button:hover {
+  box-shadow: 2px 2px 2px black;
+}
+
+button.btn_table_layout {
+  background-color: orange;
+}
+
+button.btn_pay_cash {
+  background-color: blue;
+  color: white;
+}
+
+button.btn_pay_card {
+  background-color: green;
+}

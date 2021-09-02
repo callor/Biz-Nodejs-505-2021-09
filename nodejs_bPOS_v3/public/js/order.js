@@ -1,3 +1,5 @@
+const total_pay = {};
+
 // fetch를 통해서 되돌려 받은 주문리스트를 왼쪽으 주문리스트에 표현하기
 const add_order_list = (order_list) => {
   const order_box = document.querySelector("table.order_list tbody");
@@ -13,7 +15,13 @@ const add_order_list = (order_list) => {
     });
   }
 
-  const total_pay = { count: 0, total: 0 };
+  // 비어있는 total_pay 에 각 item을 추가하면서 값을 저장
+  total_pay.title = "합계";
+  total_pay.count = 0;
+  total_pay.qty = 0;
+  total_pay.b1 = "";
+  total_pay.total = 0;
+  total_pay.b2 = "";
 
   const orders = order_list.map((order, index) => {
     const order_item = [
@@ -25,16 +33,38 @@ const add_order_list = (order_list) => {
       "X", // 삭제버튼
     ];
 
-    const order_tds = order_item.map((order) => {
+    total_pay.count++;
+    total_pay.qty += order.to_qty;
+    total_pay.total += order.to_qty * order.to_price;
+
+    const order_tds = order_item.map((item) => {
       const td = document.createElement("TD");
-      td.innerText = order;
+      td.innerText = item;
+      td.dataset.order_seq = order.to_seq;
       return td;
     });
     const order_tr = document.createElement("TR");
     order_tr.append(...order_tds);
     return order_tr;
   });
-  document.querySelector("table.order_list tbody").append(...orders);
+
+  // order list 완성
+  order_box.append(...orders);
+
+  // 결과(합계) 표현
+  // Object.keys(JSON객체)
+  // JSON객체의 key값만 추출하여 Object 배열로 만들어 준다
+  const pay_tds = Object.keys(total_pay).map((key) => {
+    const td = document.createElement("TD");
+    td.innerText = total_pay[key];
+    td.style.backgroundColor = "#bbb";
+    return td;
+  });
+
+  const pay_tr = document.createElement("TR");
+  pay_tr.append(...pay_tds);
+
+  order_box.appendChild(pay_tr);
 };
 
 // fetch를 사용하여 서버에 데이터를 요청하기 위해 별도의
@@ -73,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // article.order_list에서 dataset을 추출하여 변수에 담기
   const order_article = document.querySelector("article.order_list");
   const table_id = order_article.dataset.table_id;
+  const order_table = document.querySelector("table.order_list");
 
   const pay_box = document.querySelector("div.pay_box");
 
@@ -95,13 +126,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (order_article) {
-    order_article.addEventListener("click", (e) => {
+  if (order_table) {
+    order_table.addEventListener("click", (e) => {
       const target = e.target;
-      if (
-        target.tagName === "DIV" &&
-        target.className.includes("menu_delete")
-      ) {
+      if (target.tagName === "TD" && target.innerText === "X") {
         const order_seq = target.dataset.order_seq;
         // alert(order_seq);
         if (confirm("주문 메뉴를 삭제합니다!!!")) {
@@ -123,49 +151,27 @@ document.addEventListener("DOMContentLoaded", () => {
   // 화면이 열릴때 자동으로 실행될 코드
   getOrders(table_id);
 
-  // button box에 click event를 설정하고
-  // button 클릭되었을때 결제 처리를 수행하려고 했다
-  // button box 포함하여 button을 동적으로 생성을 했다
-  // 동적으로 생성된 tag들은 자체적으로 event를 수신하지 못한다
-  // 아래의 event 핸들러는 div.button_box가 만들어지기 전에
-  // 선언되고 OS에게 알려진 코드이다
-  // div.button_box가 아직 만들어지지 않은 상태에서
-  // 선언된 event 핸들러는 OS가 무시해 버린다
   if (pay_box) {
     pay_box.addEventListener("click", (e) => {
       const button = e.target;
 
-      if (button.className.includes("btn_cash")) {
-        alert("현금결제");
-      } else {
-        alert("카드결제");
+      let pay_text = "";
+      if (button.className.includes("btn_pay_cash")) {
+        pay_text = "현금결제";
+      } else if (button.className.includes("btn_pay_card")) {
+        pay_text = "카드결제";
+      } else if (button.className.includes("btn_table_layout")) {
+        document.location.href = "/";
+      }
+
+      if (button.tagName === "BUTTON") {
+        const modal = document.querySelector("div.modal");
+        modal.style.display = "flex";
+        document.querySelector("span.pay_qty").innerText = pay_text;
+        document.querySelector("span.pay_total").innerText = total_pay.total;
       }
     });
   }
-
-  // 동적으로 생성된 tag에 event 핸들링을 하기 위해서
-  // 처음에 아예 전체 HTMl 문서 자체에 click event를 설정해 둔다
-  // document에 click event를 설정하고
-  // 실제 tag가 생성된 후에 event를 버블링 할수 있도록
-  // 설정하는 방법
-  document.addEventListener("click", (e) => {
-    const button = e.target;
-    const modal = document.querySelector("div.modal");
-
-    if (button.tagName === "BUTTON") {
-      if (button.className.includes("btn_cash")) {
-        document.querySelector("span.pay_qty").innerText = "현금결제";
-        modal.style.display = "flex";
-      } else if (button.className.includes("btn_card")) {
-        document.querySelector("span.pay_qty").innerText = "카드결제";
-        modal.style.display = "flex";
-      }
-      const order_pay_total = document.querySelector(
-        "div.order_pay_total"
-      ).innerText;
-      document.querySelector("span.pay_total").innerText = order_pay_total;
-    }
-  });
 
   // x 버튼을 클릭하여 modal 창 닫기
   document.querySelector("div.close span").addEventListener("click", (e) => {
