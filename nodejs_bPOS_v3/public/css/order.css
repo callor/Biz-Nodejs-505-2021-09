@@ -1,0 +1,93 @@
+section.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+article.order_list,
+article.menu_list {
+  border: 1px solid green;
+  margin: 10px;
+  padding: 10px;
+  background-color: #ddd;
+  height: 90%;
+  flex: 1;
+}
+article.order_list {
+  overflow: auto;
+}
+article.menu_list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+article.order_list h1 {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 0.9rem;
+}
+
+article.menu_list div.menu {
+  width: 100px;
+  margin: 5px;
+  border: 1px solid red;
+  background-color: #ddd;
+  color: blue;
+  font-weight: bold;
+}
+
+table.order_list {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+table.order_list th,
+table.order_list td {
+  padding: 8px 10px; /* top, botton:8px, left, right:10px */
+  text-align: left;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  background-color: #eee;
+}
+
+/* th, td 3번째 칼럼 이후 */
+table.order_list th:nth-of-type(n + 3),
+table.order_list td:nth-of-type(n + 3) {
+  text-align: right;
+}
+
+table.order_list th:last-of-type,
+table.order_list td:last-of-type {
+  text-align: center;
+}
+
+table.order_list td:last-of-type:hover {
+  background-color: #aaa;
+  color: red;
+  cursor: pointer;
+}
+
+div.btn_box {
+  border: 1px solid #aaa;
+  padding: 10px;
+  text-align: center;
+}
+
+div.btn_box button {
+  border: none;
+  outline: none;
+  padding: 1rem;
+  margin: 5px;
+  border-radius: 5px;
+}
