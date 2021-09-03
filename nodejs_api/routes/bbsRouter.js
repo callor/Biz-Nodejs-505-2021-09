@@ -33,4 +33,11 @@ router.get("/push_find", async (req, res) => {
   await res.json(result);
 });
 
+router.post("/write", async (req, res) => {
+  await console.table(req.body);
+  await BBS.create(req.body);
+  const result = await BBS.find({});
+  res.json(result);
+});
+
 module.exports = router;

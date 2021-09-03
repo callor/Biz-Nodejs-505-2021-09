@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/js/input.js"></script>
+  </head>
+  <body>
+    <form>
+      <div>
+        <label for="">작성일</label> <input type="text" name="b_date" />
+      </div>
+      <div>
+        <label for="">작성시각</label> <input type="text" name="b_time" />
+      </div>
+      <div>
+        <label for="">작성자</label> <input type="text" name="b_writer" />
+      </div>
+      <div>
+        <label for="">제목</label> <input type="text" name="b_subject" />
+      </div>
+      <div><label for="">내용</label> <input type="text" name="b_text" /></div>
+    </form>
+    <div>
+      <button class="btn_save">저장</button>
+    </div>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>작성일자</th>
+          <th>작성시각</th>
+          <th>작성자</th>
+          <th>제목</th>
+        </tr>
+      </thead>
+      <tbody class="bbs_list"></tbody>
+    </table>
+  </body>
+</html>
