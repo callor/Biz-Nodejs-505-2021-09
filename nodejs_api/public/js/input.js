@@ -48,7 +48,7 @@ const data_send = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const btn_save = document.querySelector("button.btn_save");
+  const btn_save = document.querySelector("button.btn_save_json");
 
   if (btn_save) {
     btn_save.addEventListener("click", () => {
