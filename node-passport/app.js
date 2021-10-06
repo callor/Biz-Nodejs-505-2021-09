@@ -16,11 +16,22 @@ import logger from "morgan";
 
 import session from "express-session";
 import passport from "passport";
-import passportConfig from "./modules/Passport.js";
+import passportConfig from "./modules/PassportConfig.js";
 
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 import cors from "cors";
+import mongoose from "mongoose";
+
+const dbConn = mongoose.connection;
+dbConn.once("open", () => {
+  console.log("MongoDB OK");
+});
+dbConn.on("error", () => {
+  console.error();
+});
+
+mongoose.connect("mongodb://localhost:27017/users");
 
 const app = express();
 
@@ -30,6 +41,7 @@ const corsOption = {
     const isWhiteURL = whilteURL.indexOf(origin) !== -1;
     callback(null, isWhiteURL);
   },
+  credentials: true,
 };
 
 app.use(cors(corsOption));
@@ -47,14 +59,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join("./public")));
 
+// 하루동안 유지 밀리초 * 60초 * 60분 * 24시간
+const oneDay = 1000 * 60 * 60 * 24;
 // 세션활성화
-app.use(session({ secret: "aa1234", resave: true, saveUninitialized: false }));
+app.use(
+  session({
+    secret: "aa1234",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      httpOnly: false,
+      maxAge: oneDay,
+    },
+  })
+);
 app.use(passport.initialize()); // passport start
 app.use(passport.session());
+passportConfig();
+
+// response를 할때 session 담긴값을 클라언트로 전송하기 위한
+// 옵션설정하기
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  next();
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-passportConfig();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
