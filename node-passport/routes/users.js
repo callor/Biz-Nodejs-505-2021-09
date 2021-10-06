@@ -8,6 +8,20 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+// http://localhost/users 응답
+router.post("/", (req, res) => {
+  // 로그인이 수행되어서 session 유효한 경우에는
+  // req.user 속성이 존재한다
+  // 로그인이 안되거나 session이 유효하지 않으면
+  // req.user 가 없다
+  if (req.user) {
+    console.log("session OK", req.user);
+    res.json(req.user);
+  } else {
+    res.json([]);
+  }
+});
+
 /**
  * react와 nodejs API를 연동하여 login 구현하기
  * login router는 반드시 POST 구현해야 한다.
