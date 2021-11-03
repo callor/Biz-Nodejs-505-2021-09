@@ -8,17 +8,19 @@ const LocalStratege = passportLocal.Strategy;
 
 const exportPassport = () => {
   // 로그인이 성공했을때 (내부에서) 호출되는 함수
-  passport.serializeUser((user, done) => {
-    console.log("로그인 성공");
-    done(null, user);
+  passport.serializeUser((user, callor) => {
+    console.log("로그인 성공\n\n\n");
+    console.table(user);
+    callor(null, user);
   });
 
-  // 로그인이 정상적으로 수행된 후 client에서 세션이 유효한지
+  // 로그인이 정상적으로 유지되는 경우
+  // client에서 세션이 유효한지
   // 문의가 들어왔을때 실행되는 함수
   //	   deserializeUser
-  passport.deserializeUser((user, done) => {
+  passport.deserializeUser(async (user, done) => {
     console.log("DESC", user);
-    done(null, user);
+    // done(null, user);
   });
 
   // 로그인을 실제 수행하는 함수
@@ -30,7 +32,7 @@ const exportPassport = () => {
         passwordField: "password",
         session: true, // 세션 저장하기
       },
-      (userid, password, done) => {
+      (userid, password, callor) => {
         // Member.js 에 선언된 사용자 리스트를 사용하여 인증하기
         // const findMember = members.filter((member) => {
         //   return member.userid === userid && member.password === password;
@@ -40,17 +42,21 @@ const exportPassport = () => {
         // } else {
         //   return done(null, false, { message: "login Fial" });
         // }
-        members.map((member) => {
+        const result = members.map((member) => {
           if (member.userid === userid && member.password === password) {
-            return done(null, member);
+            return callor(null, member);
           }
         });
-        members.forEach((member) => {
-          if (member.userid === userid && member.password === passport) {
-            return done(null, member);
-          }
-        });
-        return done(null, false, { message: "login fail" });
+        if (!result) {
+          members.forEach((member) => {
+            if (member.userid === userid && member.password === passport) {
+              return callor(null, member);
+            }
+          });
+        }
+        if (!result) {
+          return callor(null, false, { message: "login fail" });
+        }
       }
     )
   );
