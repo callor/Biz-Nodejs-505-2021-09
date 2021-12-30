@@ -49,8 +49,22 @@ VALUES
 ('P0010','마요라면',2000);
 
 SELECT * FROm tbl_products;
+SELECT * FROM tbl_table_orders;
+
+USE nodeDB;
+DROP TABLE tbl_table_orders;
+DROP TABLE tbl_products;
+
+LEFT OUTER JOIN 
+`tbl_products` AS `tbl_product`
+ ON `tbl_table_orders`.`tblProductPCode` = `tbl_product`.`p_code` 
+ WHERE `tbl_table_orders`.`to_table_id` = '1';
 
 
+SELECT to_table_id, count(to_table_id)
+FROM tbl_table_orders
+WHERE to_pay IS NULL
+GROUP BY to_table_id;
 
 
 
