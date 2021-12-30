@@ -12,7 +12,7 @@ export const member_append = (join_member) => {
         new_members = [
             ...members.map((member) => {
                 if (member.username === join_member.username) return join_member;
-                else member;
+                else return member;
             }),
         ];
     // 없는 member 이면 추가
